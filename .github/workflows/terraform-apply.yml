@@ -1,0 +1,30 @@
+---
+name: terraform-apply
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - terraform.tfstate
+
+jobs:
+  terraform-apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+      - name: Terraform init
+        run: terraform init
+      - name: Terraform apply
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_github_token: ${{ secrets.GH_TOKEN }}
+      - name: Commit state
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: terraform.tfstate
+          message: Update terraform.tfstate
+          push: true

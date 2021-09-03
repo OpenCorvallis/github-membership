@@ -1,0 +1,21 @@
+---
+name: ci
+
+on:
+  pull_request:
+
+jobs:
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Run yaml Lint
+        uses: actionshub/yamllint@main
+  terraform-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Lint Terraform
+        uses: actionshub/terraform-lint@main
